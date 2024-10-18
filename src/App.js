@@ -2,58 +2,32 @@ import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
 
 function App() {
-  const [users, setUsers] = useState([]);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    
-    // Check if Telegram WebApp SDK is available
     if (window.Telegram?.WebApp) {
-      // Initialize Telegram WebApp
-      window.Telegram.WebApp.onEvent('webview_ready', () => {
-        // Get user information
-        const user = window.Telegram.WebApp.initDataUnsafe.user;
+      // Initialize the Telegram WebApp SDK
+      window.Telegram.WebApp.ready();
 
-        // Store user data in state
-        if (user) {
-          setUsers(user);
-        }
-
-        // Expand the web app to full screen
-        window.Telegram.WebApp.expand();
-      });
-
-      // Send data back to the bot when the user submits data
-      window.Telegram.WebApp.sendData("Sample data from React WebApp");
+      // Retrieve user data
+      const user = window.Telegram.WebApp.initDataUnsafe?.user;
+      if (user) {
+        setUserData(user);
+      }
     }
   }, []);
 
-  // useEffect(()=>{
-  //   axios.get('/api/users')
-  //     .then(response => setUsers(response.data))
-  //     .catch(error => console.error('Error fetching users:', error));
-  // },[])
-
   return (
     <div className="App">
-      <h1>Tap to Earn Dashboard</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Telegram ID</th>
-            <th>Balance</th>
-            <th>Referral Count</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map(user => (
-            <tr key={user.telegramId}>
-              <td>{user.telegramId}</td>
-              <td>{user.balance}</td>
-              <td>{user.referralCount}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {userData ? (
+        <div>
+          <h1>Welcome, {userData.first_name} {userData.last_name}</h1>
+          <p>Username: {userData.username}</p>
+          <p>Telegram ID: {userData.id}</p>
+        </div>
+      ) : (
+        <h1>Loading user data...</h1>
+      )}
     </div>
   );
 }
