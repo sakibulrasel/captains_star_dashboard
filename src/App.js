@@ -5,9 +5,28 @@ function App() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/users')
-      .then(response => setUsers(response.data))
-      .catch(error => console.error('Error fetching users:', error));
+    // axios.get('/api/users')
+    //   .then(response => setUsers(response.data))
+    //   .catch(error => console.error('Error fetching users:', error));
+    // Check if Telegram WebApp SDK is available
+    if (window.Telegram?.WebApp) {
+      // Initialize Telegram WebApp
+      window.Telegram.WebApp.onEvent('webview_ready', () => {
+        // Get user information
+        const user = window.Telegram.WebApp.initDataUnsafe.user;
+
+        // Store user data in state
+        if (user) {
+          setUserData(user);
+        }
+
+        // Expand the web app to full screen
+        window.Telegram.WebApp.expand();
+      });
+
+      // Send data back to the bot when the user submits data
+      window.Telegram.WebApp.sendData("Sample data from React WebApp");
+    }
   }, []);
 
   return (
