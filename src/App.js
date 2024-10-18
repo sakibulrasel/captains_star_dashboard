@@ -5,9 +5,7 @@ function App() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    // axios.get('/api/users')
-    //   .then(response => setUsers(response.data))
-    //   .catch(error => console.error('Error fetching users:', error));
+    
     // Check if Telegram WebApp SDK is available
     if (window.Telegram?.WebApp) {
       // Initialize Telegram WebApp
@@ -28,6 +26,12 @@ function App() {
       window.Telegram.WebApp.sendData("Sample data from React WebApp");
     }
   }, []);
+
+  useEffect(()=>{
+    axios.get('/api/users')
+      .then(response => setUsers(response.data))
+      .catch(error => console.error('Error fetching users:', error));
+  },[])
 
   return (
     <div className="App">
