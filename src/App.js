@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -27,11 +27,11 @@ function App() {
     }
   }, []);
 
-  useEffect(()=>{
-    axios.get('/api/users')
-      .then(response => setUsers(response.data))
-      .catch(error => console.error('Error fetching users:', error));
-  },[])
+  // useEffect(()=>{
+  //   axios.get('/api/users')
+  //     .then(response => setUsers(response.data))
+  //     .catch(error => console.error('Error fetching users:', error));
+  // },[])
 
   return (
     <div className="App">
