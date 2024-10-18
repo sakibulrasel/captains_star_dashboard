@@ -17,7 +17,7 @@ function App() {
 
         // Store user data in state
         if (user) {
-          setUserData(user);
+          setUsers(user);
         }
 
         // Expand the web app to full screen
